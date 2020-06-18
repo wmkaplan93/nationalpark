@@ -2,27 +2,27 @@ package com.techelevator;
 
 public class Campground {
 	
-	private int campgroundId;
-	private int parkId;
+	private long campgroundId;
+	private long parkId;
 	private String campgroundName;
-	private int openMonth;
-	private int closeMonth;
-	private int dailyFee;
+	private String openMonth;
+	private String closeMonth;
+	private long dailyFee;
 	
 	/********/
-	public int getCampgroundId() {
+	public long getCampgroundId() {
 		return campgroundId;
 	}
 	
-	public void setCampgroundId(int campgroundId) {
+	public void setCampgroundId(long campgroundId) {
 		this.campgroundId = campgroundId;
 	}
 	
-	public int getParkId() {
+	public long getParkId() {
 		return parkId;
 	}
 	
-	public void setParkId(int parkId) {
+	public void setParkId(long parkId) {
 		this.parkId = parkId;
 	}
 	
@@ -34,27 +34,27 @@ public class Campground {
 		this.campgroundName = campgroundName;
 	}
 	
-	public int getOpenMonth() {
+	public String getOpenMonth() {
 		return openMonth;
 	}
 	
-	public void setOpenMonth(int openMonth) {
+	public void setOpenMonth(String openMonth) {
 		this.openMonth = openMonth;
 	}
 	
-	public int getCloseMonth() {
+	public String getCloseMonth() {
 		return closeMonth;
 	}
 	
-	public void setCloseMonth(int closeMonth) {
+	public void setCloseMonth(String closeMonth) {
 		this.closeMonth = closeMonth;
 	}
 	
-	public int getDailyFee() {
+	public long getDailyFee() {
 		return dailyFee;
 	}
 	
-	public void setDailyFee(int dailyFee) {
+	public void setDailyFee(long dailyFee) {
 		this.dailyFee = dailyFee;
 	}
 	/*********/
