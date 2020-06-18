@@ -4,18 +4,18 @@ import java.time.LocalDate;
 
 public class Park {
 	
-	private int parkId;
+	private long parkId;
 	private String parkName;
 	private String location;
 	private LocalDate establishedDate;
-	private String area;
-	private int annualVisitors;
+	private long area;
+	private long annualVisitors;
 	private String parkDescription;
 	
 	
 	//uses default constructor.
 	/*********/
-	public int getParkId() {
+	public long getParkId() {
 		return parkId;
 	}
 	
@@ -31,11 +31,11 @@ public class Park {
 		return establishedDate;
 	}
 	
-	public String getArea() {
+	public long getArea() {
 		return area;
 	}
 	
-	public int getAnnualVisitors() {
+	public long getAnnualVisitors() {
 		return annualVisitors;
 	}
 	
@@ -43,7 +43,7 @@ public class Park {
 		return parkDescription;
 	}
 	
-	public void setParkId(int parkId) {
+	public void setParkId(long parkId) {
 		this.parkId = parkId;
 	}
 	
@@ -59,11 +59,11 @@ public class Park {
 		this.establishedDate = establishedDate;
 	}
 	
-	public void setArea(String area) {
+	public void setArea(long area) {
 		this.area = area;
 	}
 	
-	public void setAnnualVisitors(int annualVisitors) {
+	public void setAnnualVisitors(long annualVisitors) {
 		this.annualVisitors = annualVisitors;
 	}
 	
