@@ -29,8 +29,8 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 		
 		while(results.next()) {
 			Campground newCampground = new Campground();
-			newCampground.setParkId(results.getLong("park_id"));
 			newCampground.setCampgroundId(results.getLong("campround_id"));
+			newCampground.setParkId(results.getLong("park_id"));
 			newCampground.setCampgroundName(results.getString("name"));
 			newCampground.setOpenMonth(results.getString("open_from_mm"));
 			newCampground.setCloseMonth(results.getString("open_to_mm"));

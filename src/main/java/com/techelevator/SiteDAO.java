@@ -9,7 +9,7 @@ public interface SiteDAO {
 	//Gets active campsites, 
 	//returns top 5
 	//returns to menu if none.
-	public List<Site> getTop5SiteOptions(String location, LocalDate startDate, LocalDate endDate);
+	public List<Site> getTop5SiteOptions(String location, LocalDate startDate, LocalDate endDate, long campgroundId);
 	
 	
 	

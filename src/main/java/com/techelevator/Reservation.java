@@ -6,7 +6,7 @@ public class Reservation {
 	
 	//takes in information for a reservation
 	//and pushes it to the reservation table.
-	private int reservationId;
+	private long reservationId;
 	private int siteId;
 	private String customerName;
 	private LocalDate fromDate;
@@ -14,11 +14,11 @@ public class Reservation {
 	private LocalDate createDate;
 	
 	/************/
-	public int getReservationId() {
+	public long getReservationId() {
 		return reservationId;
 	}
 	
-	public void setReservationId(int reservationId) {
+	public void setReservationId(long reservationId) {
 		this.reservationId = reservationId;
 	}
 	
@@ -62,6 +62,11 @@ public class Reservation {
 		this.createDate = createDate;
 	}
 	/************/
+	
+	@Override
+	public String toString() {
+		return "Confirmation ID is: " + reservationId;
+	}
 	
 	
 
