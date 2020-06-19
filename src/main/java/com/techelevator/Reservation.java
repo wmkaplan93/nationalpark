@@ -7,13 +7,22 @@ public class Reservation {
 	//takes in information for a reservation
 	//and pushes it to the reservation table.
 	private long reservationId;
-	private int siteId;
+	private long siteId;
 	private String customerName;
 	private LocalDate fromDate;
 	private LocalDate toDate;
 	private LocalDate createDate;
+	private long resCount;
 	
 	/************/
+	public long getResCount() {
+		return resCount;
+	}
+
+	public void setResCount(long resCount) {
+		this.resCount = resCount;
+	}
+
 	public long getReservationId() {
 		return reservationId;
 	}
@@ -22,11 +31,11 @@ public class Reservation {
 		this.reservationId = reservationId;
 	}
 	
-	public int getSiteId() {
+	public long getSiteId() {
 		return siteId;
 	}
 	
-	public void setSiteId(int siteId) {
+	public void setSiteId(long siteId) {
 		this.siteId = siteId;
 	}
 	

@@ -2,44 +2,44 @@ package com.techelevator;
 
 public class Site {
 	
-	private int siteId;
-	private int campgroundId;
-	private int siteNumber;
-	private int maxOccupancy;
+	private long siteId;
+	private long campgroundId;
+	private long siteNumber;
+	private long maxOccupancy;
 	private boolean accessible;
-	private int maxRvLength;
+	private long maxRvLength;
 	private boolean utilities;
 	
 	/***********/
-	public int getSiteId() {
+	public long getSiteId() {
 		return siteId;
 	}
 	
-	public void setSiteId(int siteId) {
+	public void setSiteId(long siteId) {
 		this.siteId = siteId;
 	}
 	
-	public int getCampgroundId() {
+	public long getCampgroundId() {
 		return campgroundId;
 	}
 	
-	public void setCampgroundId(int campgroundId) {
+	public void setCampgroundId(long campgroundId) {
 		this.campgroundId = campgroundId;
 	}
 	
-	public int getSiteNumber() {
+	public long getSiteNumber() {
 		return siteNumber;
 	}
 	
-	public void setSiteNumber(int siteNumber) {
+	public void setSiteNumber(long siteNumber) {
 		this.siteNumber = siteNumber;
 	}
 	
-	public int getMaxOccupancy() {
+	public long getMaxOccupancy() {
 		return maxOccupancy;
 	}
 	
-	public void setMaxOccupancy(int maxOccupancy) {
+	public void setMaxOccupancy(long maxOccupancy) {
 		this.maxOccupancy = maxOccupancy;
 	}
 	
@@ -51,11 +51,11 @@ public class Site {
 		this.accessible = accessible;
 	}
 	
-	public int getMaxRvLength() {
+	public long getMaxRvLength() {
 		return maxRvLength;
 	}
 	
-	public void setMaxRvLength(int maxRvLength) {
+	public void setMaxRvLength(long maxRvLength) {
 		this.maxRvLength = maxRvLength;
 	}
 	

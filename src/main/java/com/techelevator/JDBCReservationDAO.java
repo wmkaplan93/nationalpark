@@ -1,6 +1,8 @@
 package com.techelevator;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -40,6 +42,26 @@ public class JDBCReservationDAO implements ReservationDAO {
 		newRes.setReservationId(results.getLong("reservation_id"));
 		
 		return newRes;
+	}
+	@Override
+	public List<Reservation> mostPopularSites() {
+		
+		List<Reservation> popularReservations = new ArrayList<>();
+		
+		String sqlCommand = "SELECT count(*) AS resCount, site_id FROM reservation "
+				+ "GROUP BY site_id "
+				+ "ORDER BY count DESC";
+		
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlCommand);
+		
+		while(results.next()) {
+			Reservation popRes = new Reservation();
+			popRes.setResCount(results.getLong("rescount"));
+			popRes.setSiteId(results.getLong("site_id"));
+			popularReservations.add(popRes);
+		}
+		
+		return popularReservations;
 	}
 
 }

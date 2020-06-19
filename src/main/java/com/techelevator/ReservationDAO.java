@@ -1,6 +1,7 @@
 package com.techelevator;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface ReservationDAO {
 	
@@ -8,5 +9,5 @@ public interface ReservationDAO {
 	//returns a Reservation ID
 	public Reservation makeReservation(String reservationName, LocalDate startDate, LocalDate endDate, long siteId);
 	
-
+	public List <Reservation> mostPopularSites();
 }
