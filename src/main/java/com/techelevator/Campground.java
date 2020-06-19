@@ -1,5 +1,7 @@
 package com.techelevator;
 
+import java.math.BigDecimal;
+
 public class Campground {
 	
 	private long campgroundId;
@@ -7,7 +9,7 @@ public class Campground {
 	private String campgroundName;
 	private String openMonth;
 	private String closeMonth;
-	private long dailyFee;
+	private float dailyFee;
 	
 	/********/
 	public long getCampgroundId() {
@@ -50,11 +52,11 @@ public class Campground {
 		this.closeMonth = closeMonth;
 	}
 	
-	public long getDailyFee() {
+	public float getDailyFee() {
 		return dailyFee;
 	}
 	
-	public void setDailyFee(long dailyFee) {
+	public void setDailyFee(float dailyFee) {
 		this.dailyFee = dailyFee;
 	}
 	/*********/

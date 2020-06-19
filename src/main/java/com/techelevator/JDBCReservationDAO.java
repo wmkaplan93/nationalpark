@@ -46,26 +46,26 @@ public class JDBCReservationDAO implements ReservationDAO {
 		
 		return newRes;
 	}
-	@Override
-	public Map<Long, Long> mostPopularSites() {
-		
-		Map<Long, Long> popularReservations = new HashMap<Long, Long>();
-		
-		String sqlCommand = "SELECT count(*) AS resCount, site_id FROM reservation "
-				+ "GROUP BY site_id "
-				+ "ORDER BY count DESC";
-		
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlCommand);
-		
-		while(results.next()) {
-			Reservation popRes = new Reservation();
-			popRes.setResCount(results.getLong("rescount"));
-			popRes.setSiteId(results.getLong("site_id"));
-			popularReservations.add(popRes);
-		}
-		
-		return popularReservations;
-	}
+//	@Override
+//	public Map<Long, Long> mostPopularSites() {
+//		
+//		Map<Long, Long> popularReservations = new HashMap<Long, Long>();
+//		
+//		String sqlCommand = "SELECT count(*) AS resCount, site_id FROM reservation "
+//				+ "GROUP BY site_id "
+//				+ "ORDER BY count DESC";
+//		
+//		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlCommand);
+//		
+//		while(results.next()) {
+//			Reservation popRes = new Reservation();
+//			popRes.setResCount(results.getLong("rescount"));
+//			popRes.setSiteId(results.getLong("site_id"));
+//			popularReservations.add(popRes);
+//		}
+//		
+//		return popularReservations;
+//	}
 	
 	/*
 	 * For each reservation in the lists
