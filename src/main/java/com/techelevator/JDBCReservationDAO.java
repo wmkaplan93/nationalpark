@@ -58,10 +58,9 @@ public class JDBCReservationDAO implements ReservationDAO {
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlCommand);
 		
 		while(results.next()) {
-			Reservation popRes = new Reservation();
-			popRes.setResCount(results.getLong("rescount"));
-			popRes.setSiteId(results.getLong("site_id"));
-			popularReservations.add(popRes);
+			long thisKey = results.getLong("rescount");
+			long thisValue = results.getLong("site_id");
+			popularReservations.put(thisKey, thisValue);
 		}
 		
 		return popularReservations;
