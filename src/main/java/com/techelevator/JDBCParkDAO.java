@@ -10,11 +10,11 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.techelevator.Park;
 
-public class JDCBParkDAO implements ParkDAO{
+public class JDBCParkDAO implements ParkDAO{
 	
 	private JdbcTemplate jdbcTemplate;
 
-	public JDCBParkDAO(DataSource dataSource) {
+	public JDBCParkDAO(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
