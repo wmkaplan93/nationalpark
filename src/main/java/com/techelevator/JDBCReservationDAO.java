@@ -67,6 +67,7 @@ public class JDBCReservationDAO implements ReservationDAO {
 //		return popularReservations;
 //	}
 	
+	
 	/*
 	 * For each reservation in the lists
 	 * If resCount < max_occupancy

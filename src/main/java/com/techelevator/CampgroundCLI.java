@@ -75,6 +75,7 @@ public class CampgroundCLI {
 		}
 		userInput = userIn.nextLine();
 		
+		
 		if(userInput.equals("1")) {
 			jdbcCampgroundDao.getAllCampgrounds(allParks.get(1).getParkId());
 			int optNum = 1;
