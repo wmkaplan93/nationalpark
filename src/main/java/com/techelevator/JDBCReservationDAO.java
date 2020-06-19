@@ -2,7 +2,10 @@ package com.techelevator;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
 import javax.sql.DataSource;
 
@@ -44,9 +47,9 @@ public class JDBCReservationDAO implements ReservationDAO {
 		return newRes;
 	}
 	@Override
-	public List<Reservation> mostPopularSites() {
+	public Map<Long, Long> mostPopularSites() {
 		
-		List<Reservation> popularReservations = new ArrayList<>();
+		Map<Long, Long> popularReservations = new HashMap<Long, Long>();
 		
 		String sqlCommand = "SELECT count(*) AS resCount, site_id FROM reservation "
 				+ "GROUP BY site_id "
@@ -63,5 +66,12 @@ public class JDBCReservationDAO implements ReservationDAO {
 		
 		return popularReservations;
 	}
+	
+	/*
+	 * For each reservation in the lists
+	 * If resCount < max_occupancy
+	 * put into a new list of available sites.
+	 * 
+	 */
 
 }
