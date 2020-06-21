@@ -47,23 +47,35 @@ public class JDBCReservationDAO implements ReservationDAO {
 		return newRes;
 	}
 	@Override
-	public Map<Long, Long> mostPopularSites() {
+	public List<Reservation> mostPopularSites(long campground_id) {
 		
-		Map<Long, Long> popularReservations = new HashMap<Long, Long>();
+		List<Reservation> mostReservations = new ArrayList<Reservation>();
 		
-		String sqlCommand = "SELECT count(*) AS resCount, site_id FROM reservation "
-				+ "GROUP BY site_id "
-				+ "ORDER BY count DESC";
+		String sqlList = "WITH    reservation AS (SELECT count(*) AS rescount, r.site_id " + 
+				"        FROM reservation r " + 
+				"        GROUP BY r.site_id " + 
+				"        ORDER BY rescount DESC) " + 
+				"SELECT r.site_id, r.rescount r.name, r.from_date, r.to_date, r.create_date, r.reservation_id " + 
+				"FROM site s " + 
+				"LEFT JOIN reservation r ON s.site_id = r.site_id " + 
+				"WHERE r.rescount < s.max_occupancy " + 
+				"AND s.campground_id = ?"
+				+ " LIMIT 5";
 		
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlCommand);
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlList, campground_id);
 		
 		while(results.next()) {
-			long thisKey = results.getLong("rescount");
-			long thisValue = results.getLong("site_id");
-			popularReservations.put(thisKey, thisValue);
+			Reservation testRes = new Reservation();
+			testRes.setSiteId(results.getLong("r.site_id"));
+			testRes.setCustomerName(results.getString("r.name"));
+			testRes.setFromDate(results.getDate("r.from_date").toLocalDate());
+			testRes.setToDate(results.getDate("r.to_date").toLocalDate());
+			testRes.setCreateDate(results.getDate("r.create_date").toLocalDate());
+			testRes.setReservationId(results.getLong("r.reservation_id"));
+			testRes.setResCount(results.getLong("r.rescount"));
+			mostReservations.add(testRes);
 		}
-		
-		return popularReservations;
+		return mostReservations;
 	}
 	
 	/*

@@ -40,6 +40,15 @@ public class JDBCParkDAO implements ParkDAO{
 		}
 		return allParks;
 	}
+
+	public Park createPark(Park thePark) {
+		String sqlInsertPark = "INSERT INTO park(park_id, name, location, establish_date, area, visitors, description) "
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?)";
+		
+		jdbcTemplate.update(sqlInsertPark, -5L, "Test Park", "Mars", "2000", "1", "1", "This is just a test");
+		return thePark;
+		
+	}
 	
 	
 
