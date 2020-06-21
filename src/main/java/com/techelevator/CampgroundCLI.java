@@ -79,14 +79,21 @@ public class CampgroundCLI {
 			System.out.println("Please enter a valid input.");
 			startMenu();
 		}
-		campgroundMenu();
+		campgroundsMenu();
 	}
 	
-	public void campgroundMenu() {
+	public void campgroundsMenu() {
 		
+		int parkInput = 0;
+		while(!userIn.hasNextInt()) {
+			if(userIn.next().toUpperCase().equals("Q")) {
+				System.exit(1);
+			}
+			System.out.println("Please select valid park!");
+			userIn.next();
+		}
+		parkInput = userIn.nextInt() - 1;
 		
-		userInput = userIn.nextLine();
-		int parkInput = Integer.parseInt(userInput) - 1;
 		System.out.println();
 		
 		System.out.println("Park Information Screen");
@@ -104,21 +111,40 @@ public class CampgroundCLI {
 		System.out.println("3) Return to previous screen");
 		
 		userInput = userIn.nextLine();
-		System.out.println();
+		userInput = userIn.nextLine();
+		System.out.println("I'm HERE");
+		
 		
 		if(userInput.equals("1")) {
-			allCampgrounds = jdbcCampgroundDao.getAllCampgrounds(allParks.get(parkInput).getParkId());
-			int optNum = 1;
-			for(Campground cGround : allCampgrounds) {
-				System.out.println(optNum +") " + cGround.getCampgroundName());
-				optNum++;
-			}
+			campgroundMenu(parkInput);
 		}
 		else if(userInput.equals("2")) {
-
+			
+			
 		}
 		else if(userInput.equals("3")) {
 			startMenu();
 		}
+	}
+	
+	public void campgroundMenu(int parkInput) {
+		
+		allCampgrounds = jdbcCampgroundDao.getAllCampgrounds(allParks.get(parkInput).getParkId());
+		int optNum = 1;
+		
+		//System.out.format("%32s%10d%16s", string1, int1, string2);
+		System.out.format("%12s%16s%16s%14s", "Name", "Open Month", "Close Month", "Daily Fee" + "\n");
+		for(Campground cGround : allCampgrounds) {
+			System.out.println("#" + optNum +") " + cGround.getCampgroundName() + "      " + cGround.getOpenMonth() + "      " +
+							 cGround.getCloseMonth() + "     $" + cGround.getDailyFee());
+			//System.out.print("#" + optNum + ") ");
+			//System.out.format("%16s%16d%16d%16d%n", cGround.getCampgroundName() + cGround.getOpenMonth() +
+			//		 cGround.getCloseMonth() + cGround.getDailyFee());
+			optNum++;
+		}
+		System.out.println();
+		System.out.println("Select an command");
+		System.out.println("1) Search for Available Reservation");
+		System.out.println("2) Return to Previous Screen");
 	}
 }
