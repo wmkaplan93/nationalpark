@@ -1,5 +1,6 @@
 package com.techelevator;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,9 @@ public class JDBCParkDAO implements ParkDAO{
 		String sqlInsertPark = "INSERT INTO park(park_id, name, location, establish_date, area, visitors, description) "
 				+ "VALUES(?, ?, ?, ?, ?, ?, ?)";
 		
-		jdbcTemplate.update(sqlInsertPark, -5L, "Test Park", "Mars", "2000", "1", "1", "This is just a test");
+		LocalDate established = LocalDate.of(2001, 01, 01);
+		
+		jdbcTemplate.update(sqlInsertPark, -5L, "Test Park", "Mars", established, 1, 1, "This is just a test");
 		return thePark;
 		
 	}

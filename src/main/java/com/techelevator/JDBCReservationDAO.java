@@ -30,19 +30,23 @@ public class JDBCReservationDAO implements ReservationDAO {
 		newRes.setFromDate(startDate);
 		newRes.setToDate(endDate);
 		
-		String sqlCommand = "INSERT INTO reservation(site_id, name, from_date, to_date, create_date) "+
-							"VALUES (" + siteId + ", " + startDate + ", " + endDate + ", " + currentDate + ");";
+		newRes.setReservationId(getNextReservationId());
 		
-		jdbcTemplate.update(sqlCommand);
+		long thisId = newRes.getReservationId();
 		
-		String sqlGetThisReservation = "SELECT reservation_id, site_id, name, from_date, to_date, create_date " +
-										"FROM reservation " +
-										"WHERE name = ?";
+		String sqlCommand = "INSERT INTO reservation(reservation_id, site_id, name, from_date, to_date, create_date) "+
+							"VALUES (?, ?, ?, ?, ?, ?)";
 		
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetThisReservation, reservationName);
+		jdbcTemplate.update(sqlCommand, thisId, siteId, reservationName, startDate, endDate, currentDate);
 		
-		newRes.setCreateDate(results.getDate("create_date").toLocalDate());
-		newRes.setReservationId(results.getLong("reservation_id"));
+//		String sqlGetThisReservation = "SELECT reservation_id, site_id, name, from_date, to_date, create_date " +
+//										"FROM reservation " +
+//										"WHERE name = ?";
+//		
+//		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetThisReservation, reservationName);
+//		
+//		newRes.setCreateDate(results.getDate("create_date").toLocalDate());
+//		newRes.setReservationId(getNextReservationId());
 		
 		return newRes;
 	}
@@ -76,6 +80,22 @@ public class JDBCReservationDAO implements ReservationDAO {
 			mostReservations.add(testRes);
 		}
 		return mostReservations;
+	}
+
+	public void createReservation(Reservation theReservation) {
+		String sqlInsertReservation = "INSERT INTO reservation(reservation_id, site_id, name, from_date, to_date, create_date) "
+				+ "VALUES(?, ?, ?, ?, ?, ?)";
+		jdbcTemplate.update(sqlInsertReservation, theReservation.getReservationId(), theReservation.getSiteId(), theReservation.getCustomerName(), theReservation.getFromDate(), theReservation.getToDate(), theReservation.getCreateDate());
+		
+	}
+	
+	public long getNextReservationId() {
+		SqlRowSet nextIdResult = jdbcTemplate.queryForRowSet("SELECT nextval('reservation_reservation_id_seq')");
+		if (nextIdResult.next()) {
+			return nextIdResult.getLong(1);
+		} else {
+			throw new RuntimeException("Something went wrong while getting an id for the new employee");
+		}
 	}
 	
 	/*

@@ -57,5 +57,10 @@ public class JDBCSiteDAO implements SiteDAO {
 	public List<Site> getTop5SiteOptions(String location, LocalDate startDate, LocalDate endDate, long campgroundId) {
 		return null;
 	}
+
+	public void createSite(Site theSite) {
+		String sqlInsertSite = "INSERT INTO site(site_id"
+		
+	}
 	
 }
