@@ -13,6 +13,9 @@ public class CampgroundCLI {
 	Scanner userIn = new Scanner(System.in);
 	JDBCParkDAO jdbcParkDao;
 	JDBCCampgroundDAO jdbcCampgroundDao;
+	String userInput;
+	List<Campground>allCampgrounds = new ArrayList<Campground>();
+	List<Park> allParks = new ArrayList<Park>();
 	
 	public static void main(String[] args) {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -34,9 +37,11 @@ public class CampgroundCLI {
 		jdbcParkDao = new JDBCParkDAO(dataSource);
 		jdbcCampgroundDao = new JDBCCampgroundDAO(dataSource);
 		
-		startMenu();
 		
+		startMenu();
 	}
+	
+	
 
 	public void run() {
 		
@@ -46,12 +51,13 @@ public class CampgroundCLI {
 	
 	public void startMenu() {
 		
-		List<Park>allParks = jdbcParkDao.getAllParks();
-		List<Campground>allCampgrounds = new ArrayList<Campground>();
+		allParks = jdbcParkDao.getAllParks();
+		
 		
 		System.out.println("Welcome to the National Park camping reservation application!");
 		System.out.println("To get started please type (S), or (Q) to exit.");
-		String userInput = userIn.nextLine();
+		userInput = userIn.nextLine();
+		System.out.println();
 		
 		if(userInput.toUpperCase().equals("S")) {
 			
@@ -73,17 +79,46 @@ public class CampgroundCLI {
 			System.out.println("Please enter a valid input.");
 			startMenu();
 		}
-		userInput = userIn.nextLine();
+		campgroundMenu();
+	}
+	
+	public void campgroundMenu() {
 		
+		
+		userInput = userIn.nextLine();
+		int parkInput = Integer.parseInt(userInput) - 1;
+		System.out.println();
+		
+		System.out.println("Park Information Screen");
+		System.out.println(allParks.get(parkInput).getParkName());
+		System.out.println(allParks.get(parkInput).getLocation());
+		System.out.println(allParks.get(parkInput).getEstablishedDate());
+		System.out.println(allParks.get(parkInput).getArea());
+		System.out.println(allParks.get(parkInput).getAnnualVisitors());
+		System.out.println();
+		System.out.println(allParks.get(parkInput).getParkDescription());
+		System.out.println();
+		System.out.println("Select a command");
+		System.out.println("1) View Camgrounds");
+		System.out.println("2) Search Reservation");
+		System.out.println("3) Return to previous screen");
+		
+		userInput = userIn.nextLine();
+		System.out.println();
 		
 		if(userInput.equals("1")) {
-			jdbcCampgroundDao.getAllCampgrounds(allParks.get(1).getParkId());
+			allCampgrounds = jdbcCampgroundDao.getAllCampgrounds(allParks.get(parkInput).getParkId());
 			int optNum = 1;
 			for(Campground cGround : allCampgrounds) {
 				System.out.println(optNum +") " + cGround.getCampgroundName());
 				optNum++;
-				System.out.println("We got to this point");
 			}
+		}
+		else if(userInput.equals("2")) {
+
+		}
+		else if(userInput.equals("3")) {
+			startMenu();
 		}
 	}
 }
