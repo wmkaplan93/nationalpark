@@ -9,7 +9,7 @@ public interface ReservationDAO {
 	//returns a Reservation ID
 	public Reservation makeReservation(String reservationName, LocalDate startDate, LocalDate endDate, long siteId);
 
-	public List<Reservation> mostPopularSites(long campground_id);
+	public List<Reservation> mostPopularSites(long campground_id, String fromDate, String toDate);
 	
 	//public List <Reservation> mostPopularSites();
 }

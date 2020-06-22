@@ -66,6 +66,12 @@ public class Site {
 	public void setUtilities(boolean utilities) {
 		this.utilities = utilities;
 	}
-	/***************/
+	/**
+	 * @return *************/
+	
+	public String toString() {
+		System.out.println("Site Number (" + siteNumber + ")");
+		return "";
+	}
 
 }

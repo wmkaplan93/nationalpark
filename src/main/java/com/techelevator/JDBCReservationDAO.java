@@ -52,40 +52,45 @@ public class JDBCReservationDAO implements ReservationDAO {
 		return newRes;
 	}
 	@Override
-	public List<Reservation> mostPopularSites(long campground_id) {
+	public List<Site> mostPopularSites(long campground_id, String fromDate, String toDate) {
 		
-		List<Reservation> mostReservations = new ArrayList<Reservation>();
+		List<Site> mostReservations = new ArrayList<Site>();
 		
 		String sqlList = "WITH    reservation AS ("
-				+ "		  SELECT count(*) AS rescount, r.site_id " 
+				+ "		  SELECT count(*) AS rescount, r.site_id, r.name, r.from_date, r.to_date, r.create_date, r.reservation_id " 
 				+ "       FROM reservation r " 
-				+ "       GROUP BY r.site_id " 
+				+ "       GROUP BY r.site_id, r.name, r.from_date, r.to_date, r.create_date, r.reservation_id " 
 				+ "       ) " 
-				+ "SELECT s.site_id, COALESCE(r.rescount, 0) AS sitepopularity, r.name, r. from_date, r.create_date, r.reservation_id " 
+				+ "SELECT s.site_id, COALESCE(r.rescount, 0) AS sitepopularity, r.name, r.from_date, r.to_date, r.create_date, r.reservation_id " 
 				+ "FROM site s " 
-				+ "LEFT JOIN reservation r ON s.site_id = r.site_id " 
+				+ "LEFT JOIN reservation r ON s.site_id = r.site_id "
+				+ "JOIN campground c ON s.campground_id = c.campground_id " 
 				+ "WHERE s.campground_id = ? "
+				+ "AND c.open_from_mm >= ? "
+				+ "AND c.open_to_mm <= ?"
 				+ "LIMIT 5";
 		
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlList, campground_id);
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlList, campground_id, fromDate, toDate);
 		
-		while(results.next()) {
-			Reservation testRes = new Reservation();
-			testRes.setSiteId(results.getLong("r.site_id"));
-			testRes.setCustomerName(results.getString("r.name"));
-			testRes.setFromDate(results.getDate("r.from_date").toLocalDate());
-			testRes.setToDate(results.getDate("r.to_date").toLocalDate());
-			testRes.setCreateDate(results.getDate("r.create_date").toLocalDate());
-			testRes.setReservationId(results.getLong("r.reservation_id"));
-			testRes.setResCount(results.getLong("sitepopularity"));
-			mostReservations.add(testRes);
-		}
+		
+		
+//		while(results.next()) {
+//			Reservation testRes = new Reservation();
+//			testRes.setSiteId(results.getLong("r.site_id"));
+//			testRes.setCustomerName(results.getString("r.name"));
+//			testRes.setFromDate(results.getDate("r.from_date").toLocalDate());
+//			testRes.setToDate(results.getDate("r.to_date").toLocalDate());
+//			testRes.setCreateDate(results.getDate("r.create_date").toLocalDate());
+//			testRes.setReservationId(results.getLong("r.reservation_id"));
+//			testRes.setResCount(results.getLong("sitepopularity"));
+//			mostReservations.add(testRes);
+//		}
 		return mostReservations;
 	}
 
 	public void createReservation(Reservation theReservation) {
 		String sqlInsertReservation = "INSERT INTO reservation(reservation_id, site_id, name, from_date, to_date, create_date) "
-				+ "VALUES(?, ?, ?, ?, ?, ?)";
+				+ "VALUES(?, ?, CONCAT(?, Family Reservation), ?, ?, ?)";
 		jdbcTemplate.update(sqlInsertReservation, getNextReservationId(), theReservation.getSiteId(), theReservation.getCustomerName(), theReservation.getFromDate(), theReservation.getToDate(), theReservation.getCreateDate());
 		
 	}

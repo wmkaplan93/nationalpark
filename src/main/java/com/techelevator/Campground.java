@@ -61,6 +61,9 @@ public class Campground {
 	}
 	/*********/
 	
+	public String toString() {
+		return "Campground Name: " + campgroundName + " -- ID: " + campgroundId;
+	}
 	
 
 }

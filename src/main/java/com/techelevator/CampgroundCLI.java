@@ -13,13 +13,17 @@ public class CampgroundCLI {
 	Scanner userIn = new Scanner(System.in);
 	JDBCParkDAO jdbcParkDao;
 	JDBCCampgroundDAO jdbcCampgroundDao;
+	JDBCReservationDAO jdbcReservationDao;
+	JDBCSiteDAO jdbcSiteDao;
 	String userInput;
 	List<Campground>allCampgrounds = new ArrayList<Campground>();
 	List<Park> allParks = new ArrayList<Park>();
+	//List<Reservation> mostReservations = new ArrayList<Reservation>();
+	List<Site> mostReservations = new ArrayList<Site>();
 	
 	public static void main(String[] args) {
 		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setUrl("jdbc:postgresql://localhost:5432/campsite");
+		dataSource.setUrl("jdbc:postgresql://localhost:5432/campground");
 		dataSource.setUsername("postgres");
 		dataSource.setPassword("postgres1");
 
@@ -30,12 +34,14 @@ public class CampgroundCLI {
 	public CampgroundCLI(DataSource datasource) {
 		// create your DAOs here
 		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setUrl("jdbc:postgresql://localhost:5432/campsite");
+		dataSource.setUrl("jdbc:postgresql://localhost:5432/campground");
 		dataSource.setUsername("postgres");
 		dataSource.setPassword("postgres1");
 		
 		jdbcParkDao = new JDBCParkDAO(dataSource);
 		jdbcCampgroundDao = new JDBCCampgroundDAO(dataSource);
+		jdbcReservationDao = new JDBCReservationDAO(dataSource);
+		jdbcSiteDao = new JDBCSiteDAO(dataSource);
 		
 		
 		startMenu();
@@ -110,7 +116,7 @@ public class CampgroundCLI {
 		System.out.println("2) Search Reservation");
 		System.out.println("3) Return to previous screen");
 		userInput = userIn.nextLine();
-		//userInput = userIn.nextLine();
+		userInput = userIn.nextLine();
 		//userInput = userIn.nextLine();
 		//System.out.println("I'm HERE");
 		
@@ -143,7 +149,7 @@ public class CampgroundCLI {
 			optNum++;
 		}
 		System.out.println();
-		System.out.println("Select an command");
+		System.out.println("Select a command");
 		System.out.println("1) Search for Available Reservation");
 		System.out.println("2) Return to Previous Screen");
 		
@@ -153,6 +159,21 @@ public class CampgroundCLI {
 			userIn.next();
 		}
 		if(userInput.equals("1")) {
+			//Ask for desired campground
+			System.out.println("Which campground would you like a reservation at? ");
+			long userCamp = Long.parseLong(userIn.nextLine());
+			//Ask for starting month
+			System.out.println("What months are you looking at?");
+			System.out.println("Starting Month (01, 02, etc): ");
+			int userStart = Integer.parseInt(userIn.nextLine());
+			//Ask for ending month
+			System.out.println("Ending Month (01, 02, etc): ");
+			int userEnd = Integer.parseInt(userIn.nextLine());
+			//Returns list via mostPopularSites
+			mostReservations = jdbcSiteDao.mostPopularSites(userCamp, userStart, userEnd);
+			for(Site site : mostReservations) {
+				site.toString();
+			}
 			
 		}
 		else if(userInput.equals("2")) {
