@@ -19,7 +19,7 @@ public class CampgroundCLI {
 	
 	public static void main(String[] args) {
 		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setUrl("jdbc:postgresql://localhost:5432/campground");
+		dataSource.setUrl("jdbc:postgresql://localhost:5432/campsite");
 		dataSource.setUsername("postgres");
 		dataSource.setPassword("postgres1");
 
@@ -30,7 +30,7 @@ public class CampgroundCLI {
 	public CampgroundCLI(DataSource datasource) {
 		// create your DAOs here
 		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setUrl("jdbc:postgresql://localhost:5432/campground");
+		dataSource.setUrl("jdbc:postgresql://localhost:5432/campsite");
 		dataSource.setUsername("postgres");
 		dataSource.setPassword("postgres1");
 		
@@ -109,10 +109,10 @@ public class CampgroundCLI {
 		System.out.println("1) View Camgrounds");
 		System.out.println("2) Search Reservation");
 		System.out.println("3) Return to previous screen");
-		
 		userInput = userIn.nextLine();
-		userInput = userIn.nextLine();
-		System.out.println("I'm HERE");
+		//userInput = userIn.nextLine();
+		//userInput = userIn.nextLine();
+		//System.out.println("I'm HERE");
 		
 		
 		if(userInput.equals("1")) {
