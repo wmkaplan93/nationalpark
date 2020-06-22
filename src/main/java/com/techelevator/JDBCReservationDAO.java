@@ -29,7 +29,7 @@ public class JDBCReservationDAO implements ReservationDAO {
 		newRes.setCustomerName(reservationName);
 		newRes.setFromDate(startDate);
 		newRes.setToDate(endDate);
-		
+		newRes.setSiteId(siteId);
 		newRes.setReservationId(getNextReservationId());
 		
 		long thisId = newRes.getReservationId();
@@ -47,7 +47,8 @@ public class JDBCReservationDAO implements ReservationDAO {
 //		
 //		newRes.setCreateDate(results.getDate("create_date").toLocalDate());
 //		newRes.setReservationId(getNextReservationId());
-		
+		System.out.println("Thank you for the reservation.");
+		newRes.toString();
 		return newRes;
 	}
 	@Override
@@ -85,7 +86,7 @@ public class JDBCReservationDAO implements ReservationDAO {
 	public void createReservation(Reservation theReservation) {
 		String sqlInsertReservation = "INSERT INTO reservation(reservation_id, site_id, name, from_date, to_date, create_date) "
 				+ "VALUES(?, ?, ?, ?, ?, ?)";
-		jdbcTemplate.update(sqlInsertReservation, theReservation.getReservationId(), theReservation.getSiteId(), theReservation.getCustomerName(), theReservation.getFromDate(), theReservation.getToDate(), theReservation.getCreateDate());
+		jdbcTemplate.update(sqlInsertReservation, getNextReservationId(), theReservation.getSiteId(), theReservation.getCustomerName(), theReservation.getFromDate(), theReservation.getToDate(), theReservation.getCreateDate());
 		
 	}
 	
@@ -94,7 +95,7 @@ public class JDBCReservationDAO implements ReservationDAO {
 		if (nextIdResult.next()) {
 			return nextIdResult.getLong(1);
 		} else {
-			throw new RuntimeException("Something went wrong while getting an id for the new employee");
+			throw new RuntimeException("Something went wrong while getting an id for the new reservation.");
 		}
 	}
 	

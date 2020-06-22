@@ -74,7 +74,7 @@ public class Reservation {
 	
 	@Override
 	public String toString() {
-		return "Confirmation ID is: " + reservationId;
+		return "Your reservation ID number is: " + reservationId;
 	}
 	
 	
