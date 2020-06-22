@@ -183,5 +183,9 @@ public class DAOIntegrationTest {
 	 * One for resrvation to check the new reservation? Is that assert equals?
 	 * 
 	 */
+	//TODO:
+	//create a test park, test campground, and test site. Use them to run tests.
+	//This will take a while, don't let the stress get to you. Slow and steady.
+	//Calm, cool, collected, and In Control. You can do this.
 	
 }
