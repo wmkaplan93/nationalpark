@@ -55,16 +55,16 @@ public class JDBCReservationDAO implements ReservationDAO {
 		
 		List<Reservation> mostReservations = new ArrayList<Reservation>();
 		
-		String sqlList = "WITH    reservation AS (SELECT count(*) AS rescount, r.site_id " + 
-				"        FROM reservation r " + 
-				"        GROUP BY r.site_id " + 
-				"        ORDER BY rescount DESC) " + 
-				"SELECT r.site_id, r.rescount r.name, r.from_date, r.to_date, r.create_date, r.reservation_id " + 
-				"FROM site s " + 
-				"LEFT JOIN reservation r ON s.site_id = r.site_id " + 
-				"WHERE r.rescount < s.max_occupancy " + 
-				"AND s.campground_id = ?"
-				+ " LIMIT 5";
+		String sqlList = "WITH    reservation AS ("
+				+ "		  SELECT count(*) AS rescount, r.site_id " 
+				+ "       FROM reservation r " 
+				+ "       GROUP BY r.site_id " 
+				+ "       ) " 
+				+ "SELECT s.site_id, COALESCE(r.rescount, 0) AS sitepopularity, r.name, r. from_date, r.create_date, r.reservation_id " 
+				+ "FROM site s " 
+				+ "LEFT JOIN reservation r ON s.site_id = r.site_id " 
+				+ "WHERE s.campground_id = ? "
+				+ "LIMIT 5";
 		
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlList, campground_id);
 		
@@ -76,7 +76,7 @@ public class JDBCReservationDAO implements ReservationDAO {
 			testRes.setToDate(results.getDate("r.to_date").toLocalDate());
 			testRes.setCreateDate(results.getDate("r.create_date").toLocalDate());
 			testRes.setReservationId(results.getLong("r.reservation_id"));
-			testRes.setResCount(results.getLong("r.rescount"));
+			testRes.setResCount(results.getLong("sitepopularity"));
 			mostReservations.add(testRes);
 		}
 		return mostReservations;
