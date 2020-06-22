@@ -146,5 +146,17 @@ public class CampgroundCLI {
 		System.out.println("Select an command");
 		System.out.println("1) Search for Available Reservation");
 		System.out.println("2) Return to Previous Screen");
+		
+		userInput = userIn.nextLine();
+		while(!userIn.hasNextInt()) {
+			System.out.println("Please select a valid command");
+			userIn.next();
+		}
+		if(userInput.equals("1")) {
+			
+		}
+		else if(userInput.equals("2")) {
+			campgroundsMenu();
+		}
 	}
 }
