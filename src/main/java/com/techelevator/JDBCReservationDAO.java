@@ -40,17 +40,9 @@ public class JDBCReservationDAO implements ReservationDAO {
 							"VALUES (?, ?, CONCAT(?, 'Family Reservation'), ?, ?, ?)";
 		
 		jdbcTemplate.update(sqlCommand, thisId, siteNum, reservationName, startDate, endDate, currentDate);
-		
-//		String sqlGetThisReservation = "SELECT reservation_id, site_id, name, from_date, to_date, create_date " +
-//										"FROM reservation " +
-//										"WHERE name = ?";
-//		
-//		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlGetThisReservation, reservationName);
-//		
-//		newRes.setCreateDate(results.getDate("create_date").toLocalDate());
-//		newRes.setReservationId(getNextReservationId());
+
 		System.out.println("Thank you for the reservation.");
-		newRes.toString();
+		System.out.println("Your Reservation number is: " + newRes.getReservationId());
 		return newRes;
 	}
 	
@@ -69,12 +61,5 @@ public class JDBCReservationDAO implements ReservationDAO {
 			throw new RuntimeException("Something went wrong while getting an id for the new reservation.");
 		}
 	}
-	
-	/*
-	 * For each reservation in the lists
-	 * If resCount < max_occupancy
-	 * put into a new list of available sites.
-	 * 
-	 */
 
 }

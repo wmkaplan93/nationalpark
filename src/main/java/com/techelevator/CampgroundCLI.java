@@ -107,7 +107,6 @@ public class CampgroundCLI {
 		parkInput = Integer.parseInt(userIn.nextLine()) - 1;
 		
 		System.out.println();
-		
 		System.out.println("Park Information Screen");
 		System.out.println(allParks.get(parkInput).getParkName());
 		System.out.println(allParks.get(parkInput).getLocation());
@@ -122,9 +121,6 @@ public class CampgroundCLI {
 		System.out.println("2) Search Reservation");
 		System.out.println("3) Return to previous screen");
 		String userChoiceMain = userIn.nextLine();
-		//userInput = userIn.nextLine();
-		//System.out.println("I'm HERE");
-		
 		
 		if(userChoiceMain.equals("1")) {
 			campgroundMenu(parkInput);
@@ -143,14 +139,10 @@ public class CampgroundCLI {
 		allCampgrounds = jdbcCampgroundDao.getAllCampgrounds(allParks.get(parkInput).getParkId());
 		int optNum = 1;
 		
-		//System.out.format("%32s%10d%16s", string1, int1, string2);
 		System.out.format("%12s%16s%16s%14s", "Name", "Open Month", "Close Month", "Daily Fee" + "\n");
 		for(Campground cGround : allCampgrounds) {
 			System.out.println("#" + optNum +") " + cGround.getCampgroundName() + "      " + cGround.getOpenMonth() + "      " +
 							 cGround.getCloseMonth() + "     $" + cGround.getDailyFee());
-			//System.out.print("#" + optNum + ") ");
-			//System.out.format("%16s%16d%16d%16d%n", cGround.getCampgroundName() + cGround.getOpenMonth() +
-			//		 cGround.getCloseMonth() + cGround.getDailyFee());
 			optNum++;
 		}
 		System.out.println();
@@ -178,7 +170,6 @@ public class CampgroundCLI {
 		System.out.println("Which campground would you like a reservation at? ");
 		int userCamp = Integer.parseInt(userIn.nextLine());
 		
-//		long userCampId = jdbcCampgroundDao.getAllCampgrounds(allParks.get(parkInput).getParkId());
 		Campground thisCampground = new Campground();
 		thisCampground = allCampgrounds.get(userCamp - 1);
 		long campChoice = thisCampground.getCampgroundId();
@@ -188,15 +179,11 @@ public class CampgroundCLI {
 		String startingDate = userIn.nextLine();
 		LocalDate sDate = LocalDate.parse(startingDate, formatter);
 		int sMonth = sDate.getMonth().getValue();
-//		System.out.println("Starting Month (01, 02, etc): ");
-//		int userStart = Integer.parseInt(userIn.nextLine());
 		//Ask for ending month
 		System.out.println("Please enter an ending date [yyyy/mm/dd]: ");
 		String endingDate = userIn.nextLine();
 		LocalDate eDate = LocalDate.parse(endingDate, formatter);
 		int eMonth = eDate.getMonth().getValue();
-//		System.out.println("Ending Month (01, 02, etc): ");
-//		int userEnd = Integer.parseInt(userIn.nextLine());
 		//Returns list via mostPopularSites
 		mostReservations = jdbcSiteDao.mostPopularSites(campChoice, sMonth, eMonth);
 		if (mostReservations.size() == 0) {
@@ -212,18 +199,21 @@ public class CampgroundCLI {
 		}
 		String siteChoice = userIn.nextLine();
 		if(siteChoice.equals("1") || siteChoice.equals("2") || siteChoice.equals("3") || siteChoice.equals("4") || siteChoice.equals("5")) {
-//			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/mm/dd");
 			int iChoice = Integer.parseInt(siteChoice);
 			
 			System.out.println("Please enter your last name: ");
 			String lastName = userIn.nextLine();
-//			System.out.println("Please enter a starting date [yyyy/mm/dd]: ");
-//			String startingDate = userIn.nextLine();
-//			LocalDate sDate = LocalDate.parse(startingDate, formatter);
-//			System.out.println("Please enter an ending date [yyyy/mm/dd]: ");
-//			String endingDate = userIn.nextLine();
-//			LocalDate eDate = LocalDate.parse(endingDate, formatter);
-			jdbcReservationDao.makeReservation(lastName, sDate, eDate, mostReservations.get(iChoice));
+
+			jdbcReservationDao.makeReservation(lastName, sDate, eDate, mostReservations.get(iChoice - 1));
 		}
+		System.out.println("");
+		System.out.println("Please type [Q] to quit, or [R] to make another reservation.");
+		String userReset = userIn.nextLine();
+		if ("R".equals(userReset.toUpperCase())) {
+			startMenu();
+		}
+		System.out.println("");
+		System.out.println("Have a nice day!");
+		System.exit(0);
 	}
 }

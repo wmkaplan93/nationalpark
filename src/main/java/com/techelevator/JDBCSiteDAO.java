@@ -31,11 +31,6 @@ public class JDBCSiteDAO implements SiteDAO {
 		
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlSiteList, campgroundId);
 		
-		//if list.length == 0 "No reservations available, please try another time frame or location." 
-		//Returns to reservation menu or to main menu
-		
-		
-		
 		while(results.next()) {
 			Site newSite = new Site();
 			newSite.setSiteId(results.getLong("site_id"));
@@ -49,9 +44,6 @@ public class JDBCSiteDAO implements SiteDAO {
 		}
 		return allSites;
 	}
-
-	
-	//
 	
 	public List<Site> mostPopularSites(long campground_id, int fromDate, int toDate) {
 		
@@ -62,7 +54,7 @@ public class JDBCSiteDAO implements SiteDAO {
 				+ "       FROM reservation r " 
 				+ "       GROUP BY r.site_id " 
 				+ "       ) " 
-				+ "SELECT s.site_number, COALESCE(r.rescount, 0) AS sitepopularity " 
+				+ "SELECT s.site_number, COALESCE(r.rescount, 0) AS sitepopularity, s.site_id " 
 				+ "FROM site s " 
 				+ "LEFT JOIN reservation r ON s.site_id = r.site_id "
 				+ "JOIN campground c ON s.campground_id = c.campground_id " 
@@ -77,7 +69,7 @@ public class JDBCSiteDAO implements SiteDAO {
 		
 		while(results.next()) {
 			Site newSite = new Site();
-//			newSite.setSiteId(results.getLong("site_id"));
+			newSite.setSiteId(results.getLong("site_id"));
 //			newSite.setCampgroundId(results.getLong("campground_id"));
 			newSite.setSiteNumber(results.getLong("site_number"));
 //			newSite.setMaxOccupancy(results.getLong("max_occupancy"));
