@@ -173,8 +173,15 @@ public class CampgroundCLI {
 	
 	public void reservationMenu(int parkInput) {
 		
+		allCampgrounds = jdbcCampgroundDao.getAllCampgrounds(allParks.get(parkInput).getParkId());
+		
 		System.out.println("Which campground would you like a reservation at? ");
-		long userCamp = Long.parseLong(userIn.nextLine());
+		int userCamp = Integer.parseInt(userIn.nextLine());
+		
+//		long userCampId = jdbcCampgroundDao.getAllCampgrounds(allParks.get(parkInput).getParkId());
+		Campground thisCampground = new Campground();
+		thisCampground = allCampgrounds.get(userCamp - 1);
+		long campChoice = thisCampground.getCampgroundId();
 		//Ask for starting month
 		System.out.println("What timeframe are you looking at?");
 		System.out.println("Please enter a starting date [yyyy/mm/dd]: ");
@@ -191,7 +198,7 @@ public class CampgroundCLI {
 //		System.out.println("Ending Month (01, 02, etc): ");
 //		int userEnd = Integer.parseInt(userIn.nextLine());
 		//Returns list via mostPopularSites
-		mostReservations = jdbcSiteDao.mostPopularSites(userCamp, sMonth, eMonth);
+		mostReservations = jdbcSiteDao.mostPopularSites(campChoice, sMonth, eMonth);
 		if (mostReservations.size() == 0) {
 			System.out.println("Sorry, no campsites available. Please try again.");
 			campgroundMenu(parkInput);
