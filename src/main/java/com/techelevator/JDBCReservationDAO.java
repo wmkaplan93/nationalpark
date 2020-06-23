@@ -21,7 +21,7 @@ public class JDBCReservationDAO implements ReservationDAO {
 	}
 	
 	@Override
-	public Reservation makeReservation(String reservationName, LocalDate startDate, LocalDate endDate, long siteId) {
+	public Reservation makeReservation(String reservationName, LocalDate startDate, LocalDate endDate, Site site) {
 		
 		Reservation newRes = new Reservation();
 		LocalDate currentDate = LocalDate.now();
@@ -29,15 +29,17 @@ public class JDBCReservationDAO implements ReservationDAO {
 		newRes.setCustomerName(reservationName);
 		newRes.setFromDate(startDate);
 		newRes.setToDate(endDate);
-		newRes.setSiteId(siteId);
+		newRes.setSiteId(site.getSiteId());
 		newRes.setReservationId(getNextReservationId());
+		
+		long siteNum = site.getSiteId();
 		
 		long thisId = newRes.getReservationId();
 		
 		String sqlCommand = "INSERT INTO reservation(reservation_id, site_id, name, from_date, to_date, create_date) "+
-							"VALUES (?, ?, ?, ?, ?, ?)";
+							"VALUES (?, ?, CONCAT(?, 'Family Reservation'), ?, ?, ?)";
 		
-		jdbcTemplate.update(sqlCommand, thisId, siteId, reservationName, startDate, endDate, currentDate);
+		jdbcTemplate.update(sqlCommand, thisId, siteNum, reservationName, startDate, endDate, currentDate);
 		
 //		String sqlGetThisReservation = "SELECT reservation_id, site_id, name, from_date, to_date, create_date " +
 //										"FROM reservation " +
@@ -51,43 +53,7 @@ public class JDBCReservationDAO implements ReservationDAO {
 		newRes.toString();
 		return newRes;
 	}
-	@Override
-	public List<Site> mostPopularSites(long campground_id, String fromDate, String toDate) {
-		
-		List<Site> mostReservations = new ArrayList<Site>();
-		
-		String sqlList = "WITH    reservation AS ("
-				+ "		  SELECT count(*) AS rescount, r.site_id, r.name, r.from_date, r.to_date, r.create_date, r.reservation_id " 
-				+ "       FROM reservation r " 
-				+ "       GROUP BY r.site_id, r.name, r.from_date, r.to_date, r.create_date, r.reservation_id " 
-				+ "       ) " 
-				+ "SELECT s.site_id, COALESCE(r.rescount, 0) AS sitepopularity, r.name, r.from_date, r.to_date, r.create_date, r.reservation_id " 
-				+ "FROM site s " 
-				+ "LEFT JOIN reservation r ON s.site_id = r.site_id "
-				+ "JOIN campground c ON s.campground_id = c.campground_id " 
-				+ "WHERE s.campground_id = ? "
-				+ "AND c.open_from_mm >= ? "
-				+ "AND c.open_to_mm <= ?"
-				+ "LIMIT 5";
-		
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlList, campground_id, fromDate, toDate);
-		
-		
-		
-//		while(results.next()) {
-//			Reservation testRes = new Reservation();
-//			testRes.setSiteId(results.getLong("r.site_id"));
-//			testRes.setCustomerName(results.getString("r.name"));
-//			testRes.setFromDate(results.getDate("r.from_date").toLocalDate());
-//			testRes.setToDate(results.getDate("r.to_date").toLocalDate());
-//			testRes.setCreateDate(results.getDate("r.create_date").toLocalDate());
-//			testRes.setReservationId(results.getLong("r.reservation_id"));
-//			testRes.setResCount(results.getLong("sitepopularity"));
-//			mostReservations.add(testRes);
-//		}
-		return mostReservations;
-	}
-
+	
 	public void createReservation(Reservation theReservation) {
 		String sqlInsertReservation = "INSERT INTO reservation(reservation_id, site_id, name, from_date, to_date, create_date) "
 				+ "VALUES(?, ?, CONCAT(?, Family Reservation), ?, ?, ?)";

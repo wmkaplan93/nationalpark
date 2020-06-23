@@ -62,7 +62,7 @@ public class JDBCSiteDAO implements SiteDAO {
 				+ "       FROM reservation r " 
 				+ "       GROUP BY r.site_id " 
 				+ "       ) " 
-				+ "SELECT s.site_id, COALESCE(r.rescount, 0) AS sitepopularity " 
+				+ "SELECT s.site_number, COALESCE(r.rescount, 0) AS sitepopularity " 
 				+ "FROM site s " 
 				+ "LEFT JOIN reservation r ON s.site_id = r.site_id "
 				+ "JOIN campground c ON s.campground_id = c.campground_id " 
@@ -72,14 +72,14 @@ public class JDBCSiteDAO implements SiteDAO {
 				+ "ORDER BY sitepopularity DESC "
 				+ "LIMIT 5";
 		
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlList);
-				//, campground_id, fromDate, toDate);
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sqlList, campground_id, fromDate, toDate);
+
 		
 		while(results.next()) {
 			Site newSite = new Site();
-//			newSite.setSiteId(results.getLong("s.site_id"));
+//			newSite.setSiteId(results.getLong("site_id"));
 //			newSite.setCampgroundId(results.getLong("campground_id"));
-//			newSite.setSiteNumber(results.getLong("site_number"));
+			newSite.setSiteNumber(results.getLong("site_number"));
 //			newSite.setMaxOccupancy(results.getLong("max_occupancy"));
 //			newSite.setAccessible(results.getBoolean("accessible"));
 //			newSite.setMaxRvLength(results.getLong("max_rv_length"));

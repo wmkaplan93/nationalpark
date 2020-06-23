@@ -1,6 +1,10 @@
 package com.techelevator;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,6 +24,8 @@ public class CampgroundCLI {
 	List<Park> allParks = new ArrayList<Park>();
 	//List<Reservation> mostReservations = new ArrayList<Reservation>();
 	List<Site> mostReservations = new ArrayList<Site>();
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
 	
 	public static void main(String[] args) {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -98,7 +104,7 @@ public class CampgroundCLI {
 			System.out.println("Please select valid park!");
 			userIn.next();
 		}
-		parkInput = userIn.nextInt() - 1;
+		parkInput = Integer.parseInt(userIn.nextLine()) - 1;
 		
 		System.out.println();
 		
@@ -115,20 +121,19 @@ public class CampgroundCLI {
 		System.out.println("1) View Camgrounds");
 		System.out.println("2) Search Reservation");
 		System.out.println("3) Return to previous screen");
-		userInput = userIn.nextLine();
-		userInput = userIn.nextLine();
+		String userChoiceMain = userIn.nextLine();
 		//userInput = userIn.nextLine();
 		//System.out.println("I'm HERE");
 		
 		
-		if(userInput.equals("1")) {
+		if(userChoiceMain.equals("1")) {
 			campgroundMenu(parkInput);
 		}
-		else if(userInput.equals("2")) {
-			
+		else if(userChoiceMain.equals("2")) {
+			reservationMenu(parkInput);
 			
 		}
-		else if(userInput.equals("3")) {
+		else if(userChoiceMain.equals("3")) {
 			startMenu();
 		}
 	}
@@ -153,31 +158,65 @@ public class CampgroundCLI {
 		System.out.println("1) Search for Available Reservation");
 		System.out.println("2) Return to Previous Screen");
 		
-		userInput = userIn.nextLine();
-		while(!userIn.hasNextInt()) {
+		String userChoiceCg = userIn.nextLine();
+		while(!"1".equals(userChoiceCg) && !"2".equals(userChoiceCg)) {
 			System.out.println("Please select a valid command");
-			userIn.next();
+			userChoiceCg = userIn.nextLine();
 		}
-		if(userInput.equals("1")) {
-			//Ask for desired campground
-			System.out.println("Which campground would you like a reservation at? ");
-			long userCamp = Long.parseLong(userIn.nextLine());
-			//Ask for starting month
-			System.out.println("What months are you looking at?");
-			System.out.println("Starting Month (01, 02, etc): ");
-			int userStart = Integer.parseInt(userIn.nextLine());
-			//Ask for ending month
-			System.out.println("Ending Month (01, 02, etc): ");
-			int userEnd = Integer.parseInt(userIn.nextLine());
-			//Returns list via mostPopularSites
-			mostReservations = jdbcSiteDao.mostPopularSites(userCamp, userStart, userEnd);
-			for(Site site : mostReservations) {
-				site.toString();
-			}
+		if("1".equals(userChoiceCg)) {
+			reservationMenu(parkInput);
+		}
+		else if("2".equals(userChoiceCg)) {
+			startMenu();
+		}
+	}
+	
+	public void reservationMenu(int parkInput) {
+		
+		System.out.println("Which campground would you like a reservation at? ");
+		long userCamp = Long.parseLong(userIn.nextLine());
+		//Ask for starting month
+		System.out.println("What timeframe are you looking at?");
+		System.out.println("Please enter a starting date [yyyy/mm/dd]: ");
+		String startingDate = userIn.nextLine();
+		LocalDate sDate = LocalDate.parse(startingDate, formatter);
+		int sMonth = sDate.getMonth().getValue();
+//		System.out.println("Starting Month (01, 02, etc): ");
+//		int userStart = Integer.parseInt(userIn.nextLine());
+		//Ask for ending month
+		System.out.println("Please enter an ending date [yyyy/mm/dd]: ");
+		String endingDate = userIn.nextLine();
+		LocalDate eDate = LocalDate.parse(endingDate, formatter);
+		int eMonth = eDate.getMonth().getValue();
+//		System.out.println("Ending Month (01, 02, etc): ");
+//		int userEnd = Integer.parseInt(userIn.nextLine());
+		//Returns list via mostPopularSites
+		mostReservations = jdbcSiteDao.mostPopularSites(userCamp, sMonth, eMonth);
+		if (mostReservations.size() == 0) {
+			System.out.println("Sorry, no campsites available. Please try again.");
+			campgroundMenu(parkInput);
+		}
+		System.out.println("Please select a site to make your reservation: ");
+		int i = 1;
+		for(Site site : mostReservations) {
+			System.out.print(i + ") ");
+			site.toString();
+			i++;
+		}
+		String siteChoice = userIn.nextLine();
+		if(siteChoice.equals("1") || siteChoice.equals("2") || siteChoice.equals("3") || siteChoice.equals("4") || siteChoice.equals("5")) {
+//			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/mm/dd");
+			int iChoice = Integer.parseInt(siteChoice);
 			
-		}
-		else if(userInput.equals("2")) {
-			campgroundsMenu();
+			System.out.println("Please enter your last name: ");
+			String lastName = userIn.nextLine();
+//			System.out.println("Please enter a starting date [yyyy/mm/dd]: ");
+//			String startingDate = userIn.nextLine();
+//			LocalDate sDate = LocalDate.parse(startingDate, formatter);
+//			System.out.println("Please enter an ending date [yyyy/mm/dd]: ");
+//			String endingDate = userIn.nextLine();
+//			LocalDate eDate = LocalDate.parse(endingDate, formatter);
+			jdbcReservationDao.makeReservation(lastName, sDate, eDate, mostReservations.get(iChoice));
 		}
 	}
 }
