@@ -34,7 +34,6 @@ public class CampgroundCLI {
 		dataSource.setPassword("postgres1");
 
 		CampgroundCLI application = new CampgroundCLI(dataSource);
-		application.run();
 	}
 
 	public CampgroundCLI(DataSource datasource) {
@@ -51,14 +50,6 @@ public class CampgroundCLI {
 		
 		
 		startMenu();
-	}
-	
-	
-
-	public void run() {
-		
-		
-
 	}
 	
 	public void startMenu() {
@@ -184,6 +175,15 @@ public class CampgroundCLI {
 		String endingDate = userIn.nextLine();
 		LocalDate eDate = LocalDate.parse(endingDate, formatter);
 		int eMonth = eDate.getMonth().getValue();
+		if(sDate.compareTo(LocalDate.now()) <= 0) {
+			System.out.println("Please enter a future date");
+			reservationMenu(parkInput);
+		}
+		
+		if(sDate.compareTo(eDate) >= 0) {
+			System.out.println("Please make sure the ending date is after the starting date.");
+			reservationMenu(parkInput);
+		}
 		//Returns list via mostPopularSites
 		mostReservations = jdbcSiteDao.mostPopularSites(campChoice, sMonth, eMonth);
 		if (mostReservations.size() == 0) {

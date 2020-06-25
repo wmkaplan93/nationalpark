@@ -41,13 +41,11 @@ public class JDBCCampgroundDAO implements CampgroundDAO {
 		return allCampgrounds;
 	}
 	
-	public Campground createCampground(Campground theCampground) {
+	public void createCampground(Campground theCampground) {
 		String sqlInsertCampground = "INSERT INTO campground(campground_id, park_id, name, open_from_mm, open_to_mm, daily_fee) "
-				+ "VALUES(?, ?, ?, ?, ?, ?::float8::numeric::money)";
-		
-		float dailyFee = 10.00f;
-		jdbcTemplate.update(sqlInsertCampground, -6L, 1L, "Test Campground", "01", "01", 10.00);
-		return theCampground;
+				+ "VALUES (" + theCampground.getCampgroundId() + ", " + theCampground.getParkId() + ", \'" + theCampground.getCampgroundName() + "\', \'" + theCampground.getOpenMonth() + "\', \'" + theCampground.getCloseMonth() + "\', " + theCampground.getDailyFee() + "::float8::numeric::money)";
+		jdbcTemplate.update(sqlInsertCampground);
+
 		
 	}
 	

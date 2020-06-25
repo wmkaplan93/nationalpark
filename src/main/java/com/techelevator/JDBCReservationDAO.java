@@ -47,8 +47,8 @@ public class JDBCReservationDAO implements ReservationDAO {
 	}
 	
 	public void createReservation(Reservation theReservation) {
-		String sqlInsertReservation = "INSERT INTO reservation(reservation_id, site_id, name, from_date, to_date, create_date) "
-				+ "VALUES(?, ?, CONCAT(?, Family Reservation), ?, ?, ?)";
+		String sqlInsertReservation = "INSERT INTO reservation (reservation_id, site_id, name, from_date, to_date, create_date) "
+				+ "VALUES(?, ?, CONCAT(?, \'Family Reservation\'), ?, ?, ?)";
 		jdbcTemplate.update(sqlInsertReservation, getNextReservationId(), theReservation.getSiteId(), theReservation.getCustomerName(), theReservation.getFromDate(), theReservation.getToDate(), theReservation.getCreateDate());
 		
 	}
